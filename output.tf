@@ -1,9 +1,11 @@
-output "aws_instance" {
-  value = module.my_instance.aws_instance.module_instance.public_ip
+output "instance_public_ip" {
+  value = module.my_instance.public_ip
 }
-output "aws_vpc" {
-  value = module.my_vpc.aws_vpc.my_vpc.id
+
+output "vpc_id" {
+  value = module.my_vpc.vpc_id
 }
+
 output "subnet_id" {
-  value = module.my_vpc.aws_subnet.my_subnet.id
+  value = module.my_vpc.subnet_id
 }
