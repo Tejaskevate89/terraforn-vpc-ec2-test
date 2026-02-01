@@ -27,7 +27,7 @@ variable "instance_type" {
 }
 
 variable "key_name" {
-  default = "Mrsa"
+  default = "Mrsa.pem"
 }
 
 variable "sgid" {
