@@ -1,6 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "test-tejas-64756"
+    region = "ap-south-1"
     key = "module_tf.tfstate"
   }
 }
