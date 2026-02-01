@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "value"
+    bucket = "test-tejas-64756"
     key = "module_tf.tfstate"
   }
 }
