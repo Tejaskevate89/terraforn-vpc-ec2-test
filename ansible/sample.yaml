@@ -1,6 +1,28 @@
 - name: my 1st playbook
-  hosts: all
+  hosts: all                            #all or  localhost
+  vars:
+    animal: "tiger"  #global variable
+  # vars_files:                         #seprate  global variable file
+  #   - ./var.txt
+  vars_prompt:                          #enter live promt
+    - name: animal            
+      prompt: Enther the animal name
+      private: false                    #use to show promt      = false
   tasks:
-    - name: print welcome
+    - name: print animal
+      debug:                             #debug == like linux "echo"
+        msg: "{{animal}}"
+    - name: print animal2
       debug:
-        msg: "welccome to ansible"
+        msg: "{{animal1}}"
+    - name: print animal3
+      debug:
+        msg: "{{animal}}"
+      vars:
+        animal: "lion"
+    - name: register value example
+      shell: hostname                                    #command run in shell
+      register: myhostvalue                              # output save file name
+    - name: print hostname value from register
+      debug:
+        msg: "{{myhostvalue.stdout}}"                     #"{{myhostvalue}}"  output print in detail
