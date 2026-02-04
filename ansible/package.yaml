@@ -1,0 +1,15 @@
+- name: install apache2
+  hosts: all
+  become: true                            # it is use for sudo command
+  tasks:
+    - name: install httpd if os is readhat
+      package:
+       name: httpd
+       state: latest
+      when: ansible_os_family == "RedHat"
+    - name: install apache2 if os is debian
+      package:
+       name: apache2
+       state: latest
+      when: ansible_os_family == "RedHat"
+   
