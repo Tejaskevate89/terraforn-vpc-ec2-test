@@ -2,12 +2,12 @@
   hosts: all                            #all or  localhost
   vars:
     animal: "tiger"  #global variable
-  # vars_files:                         #seprate  global variable file
-  #   - ./var.txt
-  vars_prompt:                          #enter live promt
-    - name: animal            
-      prompt: Enther the animal name
-      private: false                    #use to show promt      = false
+  vars_files:                         #seprate  global variable file
+    - ./var.txt
+  # vars_prompt:                          #enter live promt
+  #   - name: animal            
+  #     prompt: Enther the animal name
+  #     private: false                    #use to show promt      = false
   tasks:
     - name: print animal
       debug:                             #debug == like linux "echo"
