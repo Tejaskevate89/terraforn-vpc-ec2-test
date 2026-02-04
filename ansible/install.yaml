@@ -2,11 +2,14 @@
   hosts: all
   become: true                            # it is use for sudo command
   tasks:
-   - name: install httpd if os is readhat
-     yum:
-      - name: httpd
-        state: latest
+    - name: install httpd if os is readhat
+      yum:
+       name: httpd
+       state: latest
+      when: ansible_os_family="RedHat"
     - name: install apache2 if os is debian
       apt:
-       - name: install apache2
-         state: latest
+       name: install apache2
+       state: latest
+      when: ansible_os_family="RedHat"
+   
