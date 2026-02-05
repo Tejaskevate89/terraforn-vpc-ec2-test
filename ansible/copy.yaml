@@ -15,3 +15,17 @@
     copy:
       src: ./index.html
       dest: /var/www/html/index.html
+  - name: add one line in indrx.html   #add single line in web
+    lineinfile:
+      path: /var/www/html/index.html
+      regexp: '^<h1>'                  #yitun line change honar
+      line: "<h1> hellow here single line added</h1>"
+  - name: add multiple line in indrx.html   #add multiple line in web
+    blockinfile:
+      path: /var/www/html/index.html
+      regexp: '^<h1>'                  #yitun line change honar
+      block: 
+        - "<h1> hellow here is line1 added</h1>"
+        - "<h1> hellow here is line2 added</h1>"
+        - "<h1> hellow here is line3 added</h1>"
+        - "<h1> hellow here is line4 added</h1>"
