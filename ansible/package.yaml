@@ -3,11 +3,11 @@
   become: true
 
   tasks:
-    # - name: Update apt cache (Debian/Ubuntu)
-    #   apt:
-    #     update_cache: yes
-    #     cache_valid_time: 3600
-    #   when: ansible_facts['os_family'] == "Debian"
+    - name: Update apt cache (Debian/Ubuntu)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_facts['os_family'] == "Debian"
 
     - name: Install httpd on RedHat
       package:
