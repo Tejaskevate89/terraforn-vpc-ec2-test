@@ -14,3 +14,10 @@
 
 # task skip krny sathi use krtat
 #command: ansible-playbook tags.yaml --skip-tag task1
+
+#perform perticulartask 
+#command:
+# ansible-playbook tags.yaml --tag task2
+
+# list a tag
+# ansible-playbook tags.yaml --list-tags
