@@ -1,14 +1,22 @@
-- name: install apache2
+- name: install apache
   hosts: all
   become: true
+
   tasks:
-    - name: install httpd if os is redhat
+    # - name: Update apt cache (Debian/Ubuntu)
+    #   apt:
+    #     update_cache: yes
+    #     cache_valid_time: 3600
+    #   when: ansible_facts['os_family'] == "Debian"
+
+    - name: Install httpd on RedHat
       package:
-       name: httpd
-       state: latest
-      when: ansible_os_family == "RedHat"
-    - name: install apache2 if os is debian
-      package: 
-       name: apache2
-       state: latest
-      when: ansible_os_family == "Debian"
+        name: httpd
+        state: present
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Install apache2 on Debian
+      package:
+        name: apache2
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
