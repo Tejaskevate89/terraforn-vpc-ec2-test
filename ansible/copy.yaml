@@ -23,7 +23,8 @@
   - name: add multiple line in indrx.html   #add multiple line in web
     blockinfile:
       path: /var/www/html/index.html
-      regexp: '^<h1>'                  #yitun line change honar
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"   # blockinfile ca mark kadnysa thi
+      insertafter: '^<h1>'                  #yitun line change honar
       block: |
         "<h1> hellow here is line1 added</h1>"
         "<h1> hellow here is line2 added</h1>"
