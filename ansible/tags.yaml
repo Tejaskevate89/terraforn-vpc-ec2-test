@@ -11,3 +11,6 @@
       msg: "hello..."
     tags:
       - task2
+
+# task skip krny sathi use krtat
+#command: ansible-playbook tags.yaml --skip-tag task1
