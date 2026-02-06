@@ -1,0 +1,5 @@
+#execute roll module
+- name: execute roles
+  hosts: all
+  roles:
+    - sample_role
