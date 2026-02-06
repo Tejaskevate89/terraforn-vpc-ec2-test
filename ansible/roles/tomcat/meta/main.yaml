@@ -1,0 +1,5 @@
+---
+galaxy_info:
+  author: Tejas
+  description: OS-independent Tomcat installation role
+  min_ansible_version: 2.9
