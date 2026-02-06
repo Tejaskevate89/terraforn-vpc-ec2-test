@@ -9,3 +9,13 @@
         - mango
         - orange
         - banana
+    - name: install vim, wget, httpd
+      package: 
+       name: "{{item}}"
+       state: latest
+      when: ansible_os_family == "Debian"
+      loop:
+        - vim
+        - httpd
+        - wget
+        
