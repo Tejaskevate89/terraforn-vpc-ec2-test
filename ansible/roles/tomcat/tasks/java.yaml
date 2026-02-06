@@ -1,0 +1,12 @@
+---
+- name: Install Java on RedHat-based systems
+  package:
+    name: java-11-openjdk
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install Java on Debian-based systems
+  package:
+    name: openjdk-11-jdk
+    state: present
+  when: ansible_os_family == "Debian"
