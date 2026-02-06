@@ -1,0 +1,5 @@
+---
+- name: restart tomcat
+  shell: |
+    {{ tomcat_install_dir }}/bin/shutdown.sh || true
+    {{ tomcat_install_dir }}/bin/startup.sh
