@@ -1,14 +1,14 @@
-# FROM ubuntu:20.04
-# RUN apt-get update
-# ENV DEBIAN_FRONTEND=noninteractive
-# RUN apt-get install apache2 -y
-# COPY index.html /var/www/html/index.html
-# expose 80
-# CMD [ "apache2ctl", "-D", "FOREGROUND" ]
-# # run code
-# # docker build -t myapache2:v2
-# # docker run -d -p 80:80 myapache2:v2
-# # ps # inspect # curl
+FROM ubuntu:20.04
+RUN apt-get update
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install apache2 -y
+COPY index.html /var/www/html/index.html
+expose 80
+CMD [ "apache2ctl", "-D", "FOREGROUND" ]
+# run code
+# docker build -t myapache2:v2
+# docker run -d -p 80:80 myapache2:v2
+# ps # inspect # curl
 
 
 # # java tomcat apache
@@ -31,28 +31,28 @@
 
 
 
-##############################
-#multistage docker file
-# download and extract tomcat
-FROM alpine:3.20 as downloader
+# ##############################
+# #multistage docker file
+# # download and extract tomcat
+# FROM alpine:3.20 as downloader
 
-ENV TOMCAT_VERSION=9.0.115
-WORKDIR /tmp
+# ENV TOMCAT_VERSION=9.0.115
+# WORKDIR /tmp
 
-RUN apk add --no-cache curl tar && \
-    curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
-    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
+# RUN apk add --no-cache curl tar && \
+#     curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+#     tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
 
-# final image stage 2
-FROM openjdk:17-jdk-slim
+# # final image stage 2
+# FROM openjdk:17-jdk-slim
 
-ENV CATALINA_HOME=/opt/tomcat
-ENV PATH=$CATALINA_HOME/bin:&PATH
-VOLUME [ "/data" ]
-COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
+# ENV CATALINA_HOME=/opt/tomcat
+# ENV PATH=$CATALINA_HOME/bin:&PATH
+# VOLUME [ "/data" ]
+# COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
 
-EXPOSE 8080
-CMD [ "catalina.sh", "run" ]
+# EXPOSE 8080
+# CMD [ "catalina.sh", "run" ]
 
 
 
