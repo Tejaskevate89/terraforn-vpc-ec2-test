@@ -11,29 +11,48 @@
 # # ps # inspect # curl
 
 
-# java tomcat apache
-FROM ubuntu:22.04     
-# version changr
-ENV DEBIAN_FRONTEND=noninteractive
-# add invironment only for ubuntu
-RUN apt-get update && \
-    apt-get install openjdk-21-jdk -y curl
-# install java
+# # java tomcat apache
+# FROM ubuntu:22.04     
+# # version changr
+# ENV DEBIAN_FRONTEND=noninteractive
+# # add invironment only for ubuntu
+# RUN apt-get update && \
+#     apt-get install openjdk-21-jdk -y curl
+# # install java
+# ENV TOMCAT_VERSION=9.0.115
+# RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
+# | tar -xzf -C /opt
+# # tomcat install
+# WORKDIR /opt/apache-tomcat-{TOMCAT_VERSION}/bin
+# EXPOSE 8080
+# # start tomcat
+# CMD [ "./catalina.sh", "run" ]
+# # run  # docker build -t tomcat:v3  ## -t is tag
+
+
+
+##############################
+#multistage docker file
+# download and extract tomcat
+FROM alpine:3.20 as downloader
+
 ENV TOMCAT_VERSION=9.0.115
-RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
-| tar -xzf -C /opt
-# tomcat install
-WORKDIR /opt/apache-tomcat-{TOMCAT_VERSION}/bin
+WORKDIR /tmp
+
+RUN apk add --no-cache curl tar && \
+    curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
+
+# final image stage 2
+FROM openjdk:17-jdk-slim
+
+ENV CATALINA_HOME=/opt/tomcat
+ENV PATH=$CATALINA_HOME/bin:&PATH
+VOLUME [ "/data" ]
+COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
+
 EXPOSE 8080
-# start tomcat
-CMD [ "./catalina.sh", "run" ]
-# run  # docker build -t tomcat:v3  ## -t is tag
-
-
-
-
-
-
+CMD [ "catalina.sh", "run" ]
 
 
 
