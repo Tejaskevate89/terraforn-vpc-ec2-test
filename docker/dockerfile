@@ -11,23 +11,26 @@
 # # ps # inspect # curl
 
 
-# # java tomcat apache
-# FROM ubuntu:22.04     
-# # version changr
-# ENV DEBIAN_FRONTEND=noninteractive
-# # add invironment only for ubuntu
-# RUN apt-get update && \
-#     apt-get install openjdk-21-jdk -y curl
-# # install java
-# ENV TOMCAT_VERSION=9.0.115
-# RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
-# | tar -xzf -C /opt
-# # tomcat install
-# WORKDIR /opt/apache-tomcat-{TOMCAT_VERSION}/bin
-# EXPOSE 8080
-# # start tomcat
-# CMD [ "./catalina.sh", "run" ]
-# # run  # docker build -t tomcat:v3 .  ## -t is tag
+# java tomcat apache
+FROM ubuntu:22.04     
+# version changr
+ENV TOMCAT_VERSION=9.0.115
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TOMCAT_HOME=/opt/tomcat
+# add invironment only for ubuntu
+RUN apt-get update && \
+    apt-get install -y openjdk-21-jdk curl tar && \
+    rm -rvf /var/lib/lists/*
+# install java
+RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
+    | tar -xzf -C /opt && \
+    mv /opt/apache-tomcat-${TOMCAT_VERSION} ${TOMCAT_VERSION}
+# tomcat install
+WORKDIR ${TOMCAT_HOME}/bin
+EXPOSE 8080
+# start tomcat
+CMD [ "./catalina.sh", "run" ]
+# run  # docker build -t tomcat:v3 .  ## -t is tag
 
 # #chat gpt
 # # Java + Tomcat + Apache
@@ -60,33 +63,33 @@
 # CMD ["./catalina.sh", "run"]
 
 
-#############################
-# Stage 1: Download Tomcat
-FROM alpine:3.20 AS downloader
+# #############################
+# # Stage 1: Download Tomcat
+# FROM alpine:3.20 AS downloader
 
-ENV TOMCAT_VERSION=9.0.115
-WORKDIR /tmp
+# ENV TOMCAT_VERSION=9.0.115
+# WORKDIR /tmp
 
-RUN apk add --no-cache curl tar && \
-    curl -O https://Downloads.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
-    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
+# RUN apk add --no-cache curl tar && \
+#     curl -O https://Downloads.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
+#     tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
 
-#############################
-# Stage 2: Runtime image
-FROM openjdk:17-jdk-slim
+# #############################
+# # Stage 2: Runtime image
+# FROM openjdk:17-jdk-slim
 
-ENV CATALINA_HOME=/opt/tomcat
-ENV PATH=$CATALINA_HOME/bin:$PATH
+# ENV CATALINA_HOME=/opt/tomcat
+# ENV PATH=$CATALINA_HOME/bin:$PATH
 
-# Optional volume
-VOLUME ["/data"]
+# # Optional volume
+# VOLUME ["/data"]
 
-# Copy Tomcat from stage 1
-COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
+# # Copy Tomcat from stage 1
+# COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
 
-EXPOSE 8080
+# EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+# CMD ["catalina.sh", "run"]
 
 
 
