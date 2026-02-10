@@ -60,29 +60,34 @@
 # CMD ["./catalina.sh", "run"]
 
 
-##############################
-#multistage docker file
-# download and extract tomcat
-FROM alpine:3.20 as downloader
+#############################
+# Stage 1: Download Tomcat
+FROM alpine:3.20 AS downloader
 
 ENV TOMCAT_VERSION=9.0.115
 WORKDIR /tmp
 
 RUN apk add --no-cache curl tar && \
-    curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
-    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
+    curl -fSL https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
+    -o tomcat.tar.gz && \
+    tar -xzf tomcat.tar.gz
 
-# final image stage 2
-FROM openjdk:17-jdk-slim
+#############################
+# Stage 2: Runtime image
+FROM eclipse-temurin:17-jdk-jammy
 
 ENV CATALINA_HOME=/opt/tomcat
-ENV PATH=$CATALINA_HOME/bin:&PATH
-VOLUME [ "/data" ]
+ENV PATH=$CATALINA_HOME/bin:$PATH
+
+# Optional volume
+VOLUME ["/data"]
+
+# Copy Tomcat from stage 1
 COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
 
 EXPOSE 8080
-CMD [ "catalina.sh", "run" ]
 
+CMD ["catalina.sh", "run"]
 
 
 
