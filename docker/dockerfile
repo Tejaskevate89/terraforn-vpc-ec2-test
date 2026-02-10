@@ -14,14 +14,15 @@
 # java tomcat apache
 FROM ubuntu:22.04     
 # version changr
+ENV DEBIAN_FRONTEND=noninteractive
+# add invironment only for ubuntu
 RUN apt-get update && \
-    apt-get install openjdk-21-jdk -j  
+    apt-get install openjdk-21-jdk -y curl
 # install java
 ENV TOMCAT_VERSION=9.0.115
-RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz /opt
+RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
+| tar -xzf -C /opt
 # tomcat install
-WORKDIR /opt
-RUN tar -xzf apache-tomcat-{TOMCAT_VERSION}.tar.gz
 WORKDIR /opt/apache-tomcat-{TOMCAT_VERSION}/bin
 EXPOSE 8080
 # start tomcat
