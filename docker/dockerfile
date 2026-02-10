@@ -22,7 +22,7 @@ RUN apt-get update && \
     apt-get install -y openjdk-21-jdk curl tar && \
     rm -rvf /var/lib/lists/*
 # install java
-RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
+RUN curl -fsSL https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
     | tar -xzf -C /opt && \
     mv /opt/apache-tomcat-${TOMCAT_VERSION} ${TOMCAT_VERSION}
 # tomcat install
@@ -31,7 +31,6 @@ EXPOSE 8080
 # start tomcat
 CMD [ "./catalina.sh", "run" ]
 # run  # docker build -t tomcat:v3 .  ## -t is tag
-
 # #chat gpt
 # # Java + Tomcat + Apache
 # FROM ubuntu:22.04
